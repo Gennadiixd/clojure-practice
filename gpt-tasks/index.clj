@@ -1,18 +1,7 @@
-(require '[clj-http.client :as client])
-(require '[cheshire.core :as json])
+;; Your next task is to create a function that, given a list of Pokémon names, 
+;; fetches their base experience and returns the name of the Pokémon with 
+;; the highest base experience.
 
-(defn get-data [url]
-  (let [response (client/get url)]
-    (json/parse-string (:body response))))
+(def pokemon-names ["ditto" "pikachu" "charmander" "bulbasaur" "squirtle" "mewtwo" "mew"])
 
-(def pokemon-api-url "https://pokeapi.co/api/v2/")
-(def get-pokemon-url (str pokemon-api-url "pokemon/"))
 
-(defn fetch-pokemon-by-name [pokemon-name] (get-data (str get-pokemon-url pokemon-name)))
-
-(defn display-pokemon-info [pokemon-name]
-  (let [pokemon (fetch-pokemon-by-name pokemon-name)
-        pokemon-types (map #(get-in % ["type" "name"]) (get pokemon "types"))]
-    (str "pokemon types are - " (reduce (fn [acc value] (str acc (if (empty? acc) "" ", ") value)) "" pokemon-types) ", pokemon name is - " (get pokemon "name") ", pokemon height is - " (get pokemon "height") ", pokemon weight is - " (get pokemon "weight") ", pokemon id is - " (get pokemon "id"))))
-
-(prn (display-pokemon-info "ditto"))
